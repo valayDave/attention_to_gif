@@ -1,8 +1,10 @@
 # Attention To Gif
 
-A small library to make gif from Attention Weights collected from various layers of a [Transformer](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)). 
+A small library to make gif from Attention Weights collected from various layers of a [Transformer](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)). [[Example Colab Link](https://colab.research.google.com/drive/1gGiBztUnbuPBW4c_UKle-slx1LojyBYd?usp=sharing)]
 
-[[Example Colab Link](https://colab.research.google.com/drive/1gGiBztUnbuPBW4c_UKle-slx1LojyBYd?usp=sharing)]
+![Attention Example](./attention.gif)
+
+
 
 ## Setup 
 ```sh
