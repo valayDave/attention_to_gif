@@ -6,13 +6,14 @@ A small library to make gif from Attention Weights collected from various layers
 
 ## Setup 
 ```sh
-pip install git+
+pip install git+https://github.com/valayDave/attention_to_gif
 ```
 
 ## View Video in Jupyter Notebook  
 
 ```python
 from attention_to_gif to import AttentionVisualizer
+from moviepy.editor import VideoClip
 # attention_tensor : ( num_layers ,batch_size ,num_heads ,seq_len_x ,seq_len_y )
 visulizer = AttentionVisualizer(attention_tensor,x_label_toks=tokens,y_label_toks=tokens,fig_size=(10,10),chosen_head=2)
 animation = VideoClip(make_frame=visulizer,duration=visulizer.num_layers) 
@@ -21,8 +22,8 @@ animation.ipython_display(fps = 3, loop = False, autoplay = False)
 
 ## Save Gif : 
 ```python
-from attention_to_gif to import AttentionVisualizer
+from attention_to_gif import AttentionVisualizer
 # attention_tensor : ( num_layers ,batch_size ,num_heads ,seq_len_x ,seq_len_y )
 visulizer = AttentionVisualizer(attention_tensor,x_label_toks=tokens,y_label_toks=tokens,fig_size=(10,10),chosen_head=2)
-visulizer.save_visualisation(viz_name='Attention-Viz.gif',fps = 3, loop = False, autoplay = False)
+visulizer.save_visualisation(viz_name='Attention-Viz.gif',fps = 3)
 ```
