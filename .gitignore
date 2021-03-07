@@ -1,0 +1,14 @@
+*.pem
+.env/
+.venv/
+__pycache__
+*.pyc
+.DS_Store
+.vscode/
+
+/build/
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
