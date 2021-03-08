@@ -36,7 +36,8 @@ class AttentionVisualizer:
         self.seq_len_y_lim  = seq_len_y_lim
         self.chosen_item=chosen_item
         self.layer_wise_attention_weights = layer_wise_attention_weights
-        self.fig, self.ax = plt.subplots(figsize=fig_size)
+        self.fig, self.ax = None,None
+        self.fig_size=fig_size
         self.x_label_toks = x_label_toks
         self.y_label_toks = y_label_toks
         self.title_message = title_message
@@ -58,6 +59,9 @@ class AttentionVisualizer:
     
     def __call__(self,t):
         # clear 
+        if self.fig is None:
+          self.fig, self.ax = plt.subplots(figsize=self.fig_size)
+          
         if len(self.ax.images) > 0:
           self.ax.images[-1].colorbar.remove()
         self.ax.clear()
