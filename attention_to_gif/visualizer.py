@@ -30,7 +30,7 @@ class AttentionVisualizer:
                 title_message='',
                 ) -> None:
         #()
-        self.num_layers, _ , _ , seq_len_x,seq_len_y = layer_wise_attention_weights.size()
+        self.num_layers, self.batch_size , self.num_attention_heads , seq_len_x,seq_len_y = layer_wise_attention_weights.size()
         # Doing this ensure that it work.
         self.seq_len_x_lim = seq_len_x_lim
         self.seq_len_y_lim  = seq_len_y_lim
@@ -43,9 +43,9 @@ class AttentionVisualizer:
         self.chosen_head = chosen_head
         # self.fig.colorbar()
     
-    def get_attention_values(self,layer):
-      if self.chosen_head is not None:
-        conv_arr = self.layer_wise_attention_weights[int(layer)][self.chosen_item][self.chosen_head].cpu().numpy()
+    def get_attention_values(self,layer,chosen_head=None):
+      if chosen_head is not None:
+        conv_arr = self.layer_wise_attention_weights[int(layer)][self.chosen_item][chosen_head].cpu().numpy()
       else:
         conv_arr = self.layer_wise_attention_weights[int(layer)][self.chosen_item].sum(dim=0).cpu().numpy()
       if self.seq_len_x_lim is not None:
@@ -62,7 +62,7 @@ class AttentionVisualizer:
           self.ax.images[-1].colorbar.remove()
         self.ax.clear()
 
-        conv_arr = self.get_attention_values(t)
+        conv_arr = self.get_attention_values(t,chosen_head=self.chosen_head)
         cax = self.ax.matshow(conv_arr,origin='lower', cmap='viridis',aspect='auto')
         # self.y_label_toks
         self.fig.colorbar(cax,ax=self.ax)
@@ -94,3 +94,23 @@ class AttentionVisualizer:
         # animation = VideoClip(self, duration = self.num_layers) 
         animation = VideoClip(make_frame=self,duration=self.num_layers) 
         animation.ipython_display(fps =fps ,loop=loop,autoplay=autoplay) 
+
+    def create_single_plot(self, fig_size=(10,10)):
+        fig,axes = plt.subplots(nrows=self.num_layers, ncols=self.num_attention_heads,figsize=fig_size)
+        for lidx,layerax in enumerate(axes):
+          for hidx,headax in enumerate(layerax):
+            conv_arr = self.get_attention_values(lidx,chosen_head=hidx)
+            
+            cax = headax.matshow(conv_arr,origin='lower', cmap='viridis',aspect='auto')
+            fig.colorbar(cax,ax=headax)
+            if len(self.x_label_toks) > 0:
+              headax.set_xticks([i for i in range(len(self.x_label_toks))])
+              headax.set_xticklabels(self.x_label_toks,)
+
+            if len(self.y_label_toks) > 0:
+              headax.set_yticks([len(self.y_label_toks)-i-1 for i in range(len(self.y_label_toks))])
+              headax.set_yticklabels(self.y_label_toks)
+
+            default_title = f" Attention At Layer : {int(lidx)} And Head : {hidx}\n"
+            headax.set_title(default_title)
+        return fig
