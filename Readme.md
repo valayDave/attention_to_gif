@@ -2,7 +2,7 @@
 
 A small library to make gif from Attention Weights collected from various layers of a [Transformer](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)).
 
-![Attention Example](./attention.gif)
+![Attention Example](./examples/attention.gif)
 
 
 
@@ -33,3 +33,15 @@ from attention_to_gif import AttentionVisualizer
 visulizer = AttentionVisualizer(attention_tensor,x_label_toks=tokens,y_label_toks=tokens,fig_size=(10,10),chosen_head=2)
 visulizer.save_visualisation(viz_name='Attention-Viz.gif',fps = 3)
 ```
+
+### Create Single Plot in Matplot Lib
+```python
+from attention_to_gif import AttentionVisualizer
+import matplotlib.pyplot as plt
+# attention_tensor : ( num_layers ,batch_size ,num_heads ,seq_len_x ,seq_len_y )
+visulizer = AttentionVisualizer(torch.randn(10,1,8,15,15),x_label_toks=tokens,y_label_toks=tokens,fig_size=(10,10),chosen_head=2)
+fig = visulizer.create_single_plot(fig_size=(200,200))
+plt.show()
+fig.savefig('attention.png')
+```
+![Attention Large](./examples/attention-viz.png)
